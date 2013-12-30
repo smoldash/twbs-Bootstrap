@@ -6,8 +6,13 @@ module.exports = function (grunt) {
   // Force use of Unix newlines
   grunt.util.linefeed = '\n';
 
-  RegExp.quote = require('regexp-quote')
+  RegExp.quote = function (string) {
+    return string.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&')
+  }
+
+  var fs = require('fs')
   var btoa = require('btoa')
+
   // Project configuration.
   grunt.initConfig({
 
@@ -16,8 +21,8 @@ module.exports = function (grunt) {
     banner: '/*!\n' +
               ' * Bootstrap v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
               ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
-              ' * Licensed under <%= _.pluck(pkg.licenses, "url").join(", ") %>\n' +
-              ' */\n\n',
+              ' * Licensed under <%= _.pluck(pkg.licenses, "type") %> (<%= _.pluck(pkg.licenses, "url") %>)\n' +
+              ' */\n',
     jqueryCheck: 'if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery") }\n\n',
 
     // Task configuration.
@@ -62,12 +67,16 @@ module.exports = function (grunt) {
       options: {
         csslintrc: '.csslintrc'
       },
-      src: ['dist/css/bootstrap.css', 'dist/css/bootstrap-theme.css']
+      src: [
+        'dist/css/bootstrap.css',
+        'dist/css/bootstrap-theme.css',
+        'docs-assets/css/docs.css'
+      ]
     },
 
     concat: {
       options: {
-        banner: '<%= banner %><%= jqueryCheck %>',
+        banner: '<%= banner %>\n<%= jqueryCheck %>',
         stripBanners: false
       },
       bootstrap: {
@@ -90,15 +99,24 @@ module.exports = function (grunt) {
     },
 
     uglify: {
-      options: {
-        banner: '<%= banner %>',
-        report: 'min'
-      },
       bootstrap: {
+        options: {
+          banner: '<%= banner %>\n',
+          report: 'min'
+        },
         src: ['<%= concat.bootstrap.dest %>'],
         dest: 'dist/js/<%= pkg.name %>.min.js'
       },
       customize: {
+        options: {
+          banner: '/*!\n' +
+          ' * Bootstrap Docs (<%= pkg.homepage %>)\n' +
+          ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+          ' * Licensed under the Creative Commons Attribution 3.0 Unported License. For\n' +
+          ' * details, see http://creativecommons.org/licenses/by/3.0/.\n' +
+          ' */\n',
+          report: 'min'
+        },
         src: [
           'docs-assets/js/less.js',
           'docs-assets/js/jszip.js',
@@ -111,12 +129,27 @@ module.exports = function (grunt) {
     },
 
     less: {
-      compile: {
+      compileCore: {
         options: {
-          strictMath: true
+          strictMath: true,
+          sourceMap: true,
+          outputSourceFiles: true,
+          sourceMapURL: '<%= pkg.name %>.css.map',
+          sourceMapFilename: 'dist/css/<%= pkg.name %>.css.map'
         },
         files: {
-          'dist/css/<%= pkg.name %>.css': 'less/bootstrap.less',
+          'dist/css/<%= pkg.name %>.css': 'less/bootstrap.less'
+        }
+      },
+      compileTheme: {
+        options: {
+          strictMath: true,
+          sourceMap: true,
+          outputSourceFiles: true,
+          sourceMapURL: '<%= pkg.name %>-theme.css.map',
+          sourceMapFilename: 'dist/css/<%= pkg.name %>-theme.css.map'
+        },
+        files: {
           'dist/css/<%= pkg.name %>-theme.css': 'less/theme.less'
         }
       },
@@ -191,6 +224,9 @@ module.exports = function (grunt) {
 
     validation: {
       options: {
+        charset: 'utf-8',
+        doctype: 'HTML5',
+        failHard: true,
         reset: true,
         relaxerror: [
           'Bad value X-UA-Compatible for attribute http-equiv on element meta.',
@@ -234,90 +270,7 @@ module.exports = function (grunt) {
           build: process.env.TRAVIS_JOB_ID,
           concurrency: 3,
           urls: ['http://127.0.0.1:3000/js/tests/index.html'],
-          browsers: [
-            // See https://saucelabs.com/docs/platforms/webdriver
-            {
-              browserName: 'safari',
-              version: '6',
-              platform: 'OS X 10.8'
-            },
-            {
-              browserName: 'chrome',
-              version: '28',
-              platform: 'OS X 10.6'
-            },
-            /* FIXME: currently fails 1 tooltip test
-            {
-              browserName: 'firefox',
-              version: '25',
-              platform: 'OS X 10.6'
-            },*/
-            // Mac Opera not currently supported by Sauce Labs
-            /* FIXME: currently fails 1 tooltip test
-            {
-              browserName: 'internet explorer',
-              version: '11',
-              platform: 'Windows 8.1'
-            },*/
-            /*
-            {
-              browserName: 'internet explorer',
-              version: '10',
-              platform: 'Windows 8'
-            },
-            {
-              browserName: 'internet explorer',
-              version: '9',
-              platform: 'Windows 7'
-            },
-            {
-              browserName: 'internet explorer',
-              version: '8',
-              platform: 'Windows 7'
-            },
-            {// unofficial
-              browserName: 'internet explorer',
-              version: '7',
-              platform: 'Windows XP'
-            },
-            */
-            {
-              browserName: 'chrome',
-              version: '31',
-              platform: 'Windows 8.1'
-            },
-            {
-              browserName: 'firefox',
-              version: '25',
-              platform: 'Windows 8.1'
-            },
-            // Win Opera 15+ not currently supported by Sauce Labs
-            {
-              browserName: 'iphone',
-              version: '6.1',
-              platform: 'OS X 10.8'
-            },
-            // iOS Chrome not currently supported by Sauce Labs
-            // Linux (unofficial)
-            {
-              browserName: 'chrome',
-              version: '30',
-              platform: 'Linux'
-            },
-            {
-              browserName: 'firefox',
-              version: '25',
-              platform: 'Linux'
-            }
-            // Android Chrome not currently supported by Sauce Labs
-            /* Android Browser (super-unofficial)
-            {
-              browserName: 'android',
-              version: '4.0',
-              platform: 'Linux'
-            }
-            */
-          ],
+          browsers: grunt.file.readYAML('test-infra/sauce_browsers.yml')
         }
       }
     }
@@ -331,9 +284,19 @@ module.exports = function (grunt) {
   grunt.registerTask('validate-html', ['jekyll', 'validation']);
 
   // Test task.
-  var testSubtasks = ['dist-css', 'jshint', 'jscs', 'qunit', 'validate-html'];
+  var testSubtasks = [];
+  // Skip core tests if running a different subset of the test suite
+  if (!process.env.TWBS_TEST || process.env.TWBS_TEST === 'core') {
+    testSubtasks = testSubtasks.concat(['dist-css', 'jshint', 'jscs', 'qunit']);
+  }
+  // Skip HTML validation if running a different subset of the test suite
+  if (!process.env.TWBS_TEST || process.env.TWBS_TEST === 'validate-html') {
+    testSubtasks.push('validate-html');
+  }
   // Only run Sauce Labs tests if there's a Sauce access key
-  if (typeof process.env.SAUCE_ACCESS_KEY !== 'undefined') {
+  if (typeof process.env.SAUCE_ACCESS_KEY !== 'undefined'
+      // Skip Sauce if running a different subset of the test suite
+      && (!process.env.TWBS_TEST || process.env.TWBS_TEST === 'sauce-js-unit')) {
     testSubtasks.push('connect');
     testSubtasks.push('saucelabs-qunit');
   }
@@ -352,17 +315,39 @@ module.exports = function (grunt) {
   grunt.registerTask('dist', ['clean', 'dist-css', 'dist-fonts', 'dist-js']);
 
   // Default task.
-  grunt.registerTask('default', ['test', 'dist', 'build-customizer']);
+  grunt.registerTask('default', ['test', 'dist', 'build-glyphicons-data', 'build-customizer']);
 
   // Version numbering task.
   // grunt change-version-number --oldver=A.B.C --newver=X.Y.Z
   // This can be overzealous, so its changes should always be manually reviewed!
   grunt.registerTask('change-version-number', ['sed']);
 
+  grunt.registerTask('build-glyphicons-data', function () {
+    // Pass encoding, utf8, so `readFileSync` will return a string instead of a
+    // buffer
+    var glyphiconsFile = fs.readFileSync('less/glyphicons.less', 'utf8')
+    var glpyhiconsLines = glyphiconsFile.split('\n')
+
+    // Use any line that starts with ".glyphicon-" and capture the class name
+    var iconClassName = /^\.(glyphicon-[^\s]+)/
+    var glyphiconsData = '# This file is generated via Grunt task. **Do not edit directly.** \n' +
+                         '# See the \'build-glyphicons-data\' task in Gruntfile.js.\n\n';
+    for (var i = 0, len = glpyhiconsLines.length; i < len; i++) {
+      var match = glpyhiconsLines[i].match(iconClassName)
+
+      if (match != null) {
+        glyphiconsData += '- ' + match[1] + '\n'
+      }
+    }
+
+    // Create the `_data` directory if it doesn't already exist
+    if (!fs.existsSync('_data')) fs.mkdirSync('_data')
+
+    fs.writeFileSync('_data/glyphicons.yml', glyphiconsData)
+  });
+
   // task for building customizer
   grunt.registerTask('build-customizer', 'Add scripts/less files to customizer.', function () {
-    var fs = require('fs')
-
     function getFiles(type) {
       var files = {}
       fs.readdirSync(type)

@@ -8,7 +8,11 @@
 /* jshint multistr:true */
 
 window.onload = function () { // wait for load in a dumb way because B-0
-  var cw = '/*!\n * Bootstrap v3.0.3 (http://getbootstrap.com)\n\n *\n * Copyright 2013 Twitter, Inc\n * Licensed under the Apache License v2.0\n * http://www.apache.org/licenses/LICENSE-2.0\n */\n\n'
+  var cw = '/*!\n' +
+           ' * Bootstrap v3.0.3 (http://getbootstrap.com)\n' +
+           ' * Copyright 2013 Twitter, Inc.\n' +
+           ' * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)\n' +
+           ' */\n\n';
 
   function showError(msg, err) {
     $('<div id="bsCustomizerAlert" class="bs-customizer-alert">\
@@ -223,9 +227,9 @@ window.onload = function () { // wait for load in a dumb way because B-0
 
     try {
       var parser = new less.Parser({
-          paths: ['variables.less', 'mixins.less']
-        , optimization: 0
-        , filename: 'bootstrap.css'
+          paths: ['variables.less', 'mixins.less'],
+          optimization: 0,
+          filename: 'bootstrap.css'
       }).parse(css, function (err, tree) {
         if (err) {
           return showError('<strong>Ruh roh!</strong> Could not parse less files.', err)
