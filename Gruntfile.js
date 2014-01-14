@@ -10,8 +10,11 @@ module.exports = function (grunt) {
     return string.replace(/[-\\^$*+?.()|[\]{}]/g, '\\$&')
   }
 
+  var BsLessdocParser = require('./docs/grunt/bs-lessdoc-parser.js')
   var fs = require('fs')
-  var btoa = require('btoa')
+  var generateGlyphiconsData = require('./docs/grunt/bs-glyphicons-data-generator.js')
+  var generateRawFilesJs = require('./docs/grunt/bs-raw-files-generator.js')
+  var path = require('path')
 
   // Project configuration.
   grunt.initConfig({
@@ -20,10 +23,16 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*!\n' +
               ' * Bootstrap v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
-              ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+              ' * Copyright 2011-<%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
               ' * Licensed under <%= _.pluck(pkg.licenses, "type") %> (<%= _.pluck(pkg.licenses, "url") %>)\n' +
               ' */\n',
-    jqueryCheck: 'if (typeof jQuery === "undefined") { throw new Error("Bootstrap requires jQuery") }\n\n',
+    bannerDocs: '/*!\n' +
+              ' * Bootstrap Docs (<%= pkg.homepage %>)\n' +
+              ' * Copyright 2011-<%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
+              ' * Licensed under the Creative Commons Attribution 3.0 Unported License. For\n' +
+              ' * details, see http://creativecommons.org/licenses/by/3.0/.\n' +
+              ' */\n',
+    jqueryCheck: 'if (typeof jQuery === \'undefined\') { throw new Error(\'Bootstrap requires jQuery\') }\n\n',
 
     // Task configuration.
     clean: {
@@ -44,7 +53,10 @@ module.exports = function (grunt) {
         src: ['js/tests/unit/*.js']
       },
       assets: {
-        src: ['docs-assets/js/application.js', 'docs-assets/js/customizer.js']
+        src: ['docs/assets/js/application.js', 'docs/assets/js/customizer.js']
+      },
+      docsGrunt: {
+        src: ['docs/grunt/*.js']
       }
     },
 
@@ -60,17 +72,23 @@ module.exports = function (grunt) {
       },
       test: {
         src: ['js/tests/unit/*.js']
+      },
+      assets: {
+        src: ['docs/assets/js/application.js', 'docs/assets/js/customizer.js']
+      },
+      docsGrunt: {
+        src: ['docs/grunt/*.js']
       }
     },
 
     csslint: {
       options: {
-        csslintrc: '.csslintrc'
+        csslintrc: 'less/.csslintrc'
       },
       src: [
         'dist/css/bootstrap.css',
         'dist/css/bootstrap-theme.css',
-        'docs-assets/css/docs.css'
+        'docs/assets/css/docs.css'
       ]
     },
 
@@ -101,7 +119,7 @@ module.exports = function (grunt) {
     uglify: {
       bootstrap: {
         options: {
-          banner: '<%= banner %>\n',
+          banner: '<%= banner %>',
           report: 'min'
         },
         src: ['<%= concat.bootstrap.dest %>'],
@@ -109,22 +127,30 @@ module.exports = function (grunt) {
       },
       customize: {
         options: {
-          banner: '/*!\n' +
-          ' * Bootstrap Docs (<%= pkg.homepage %>)\n' +
-          ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
-          ' * Licensed under the Creative Commons Attribution 3.0 Unported License. For\n' +
-          ' * details, see http://creativecommons.org/licenses/by/3.0/.\n' +
-          ' */\n',
+          preserveComments: 'some',
           report: 'min'
         },
         src: [
-          'docs-assets/js/less.js',
-          'docs-assets/js/jszip.js',
-          'docs-assets/js/uglify.js',
-          'docs-assets/js/filesaver.js',
-          'docs-assets/js/customizer.js'
+          'docs/assets/js/less.min.js',
+          'docs/assets/js/jszip.js',
+          'docs/assets/js/uglify.min.js',
+          'docs/assets/js/blob.js',
+          'docs/assets/js/filesaver.js',
+          'docs/assets/js/raw-files.js',
+          'docs/assets/js/customizer.js'
         ],
-        dest: 'docs-assets/js/customize.js'
+        dest: 'docs/assets/js/customize.min.js'
+      },
+      docsJs: {
+        options: {
+          preserveComments: 'some',
+          report: 'min'
+        },
+        src: [
+          'docs/assets/js/holder.js',
+          'docs/assets/js/application.js'
+        ],
+        dest: 'docs/assets/js/docs.min.js'
       }
     },
 
@@ -165,6 +191,22 @@ module.exports = function (grunt) {
       }
     },
 
+    cssmin: {
+      compress: {
+        options: {
+          keepSpecialComments: '*',
+          noAdvanced: true, // turn advanced optimizations off until it's fixed in clean-css
+          report: 'min',
+          selectorsMergeMode: 'ie8'
+        },
+        src: [
+          'docs/assets/css/docs.css',
+          'docs/assets/css/pygments-manni.css'
+        ],
+        dest: 'docs/assets/css/pack.min.css'
+      }
+    },
+
     usebanner: {
       dist: {
         options: {
@@ -185,11 +227,11 @@ module.exports = function (grunt) {
     csscomb: {
       sort: {
         options: {
-          sortOrder: '.csscomb.json'
+          config: 'less/.csscomb.json'
         },
         files: {
           'dist/css/<%= pkg.name %>.css': ['dist/css/<%= pkg.name %>.css'],
-          'dist/css/<%= pkg.name %>-theme.css': ['dist/css/<%= pkg.name %>-theme.css'],
+          'dist/css/<%= pkg.name %>-theme.css': ['dist/css/<%= pkg.name %>-theme.css']
         }
       }
     },
@@ -199,6 +241,16 @@ module.exports = function (grunt) {
         expand: true,
         src: ['fonts/*'],
         dest: 'dist/'
+      },
+      docs: {
+        expand: true,
+        cwd: './dist',
+        src: [
+          '{css,js}/*.min.*',
+          'css/*.map',
+          'fonts/*'
+        ],
+        dest: 'docs/dist'
       }
     },
 
@@ -220,6 +272,23 @@ module.exports = function (grunt) {
 
     jekyll: {
       docs: {}
+    },
+
+    jade: {
+      compile: {
+        options: {
+          pretty: true,
+          data: function () {
+            var filePath = path.join(__dirname, 'less/variables.less');
+            var fileContent = fs.readFileSync(filePath, {encoding: 'utf8'});
+            var parser = new BsLessdocParser(fileContent);
+            return {sections: parser.parseFile()};
+          }
+        },
+        files: {
+          'docs/_includes/customizer-variables.html': 'docs/customizer-variables.jade'
+        }
+      }
     },
 
     validation: {
@@ -287,7 +356,7 @@ module.exports = function (grunt) {
   var testSubtasks = [];
   // Skip core tests if running a different subset of the test suite
   if (!process.env.TWBS_TEST || process.env.TWBS_TEST === 'core') {
-    testSubtasks = testSubtasks.concat(['dist-css', 'jshint', 'jscs', 'qunit']);
+    testSubtasks = testSubtasks.concat(['dist-css', 'csslint', 'jshint', 'jscs', 'qunit', 'build-customizer-vars-form']);
   }
   // Skip HTML validation if running a different subset of the test suite
   if (!process.env.TWBS_TEST || process.env.TWBS_TEST === 'validate-html') {
@@ -306,13 +375,13 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-js', ['concat', 'uglify']);
 
   // CSS distribution task.
-  grunt.registerTask('dist-css', ['less', 'csscomb', 'usebanner']);
+  grunt.registerTask('dist-css', ['less', 'cssmin', 'csscomb', 'usebanner']);
 
-  // Fonts distribution task.
-  grunt.registerTask('dist-fonts', ['copy']);
+  // Docs distribution task.
+  grunt.registerTask('dist-docs', ['copy:docs']);
 
   // Full distribution task.
-  grunt.registerTask('dist', ['clean', 'dist-css', 'dist-fonts', 'dist-js']);
+  grunt.registerTask('dist', ['clean', 'dist-css', 'copy:fonts', 'dist-docs', 'dist-js']);
 
   // Default task.
   grunt.registerTask('default', ['test', 'dist', 'build-glyphicons-data', 'build-customizer']);
@@ -322,46 +391,10 @@ module.exports = function (grunt) {
   // This can be overzealous, so its changes should always be manually reviewed!
   grunt.registerTask('change-version-number', ['sed']);
 
-  grunt.registerTask('build-glyphicons-data', function () {
-    // Pass encoding, utf8, so `readFileSync` will return a string instead of a
-    // buffer
-    var glyphiconsFile = fs.readFileSync('less/glyphicons.less', 'utf8')
-    var glpyhiconsLines = glyphiconsFile.split('\n')
-
-    // Use any line that starts with ".glyphicon-" and capture the class name
-    var iconClassName = /^\.(glyphicon-[^\s]+)/
-    var glyphiconsData = '# This file is generated via Grunt task. **Do not edit directly.** \n' +
-                         '# See the \'build-glyphicons-data\' task in Gruntfile.js.\n\n';
-    for (var i = 0, len = glpyhiconsLines.length; i < len; i++) {
-      var match = glpyhiconsLines[i].match(iconClassName)
-
-      if (match != null) {
-        glyphiconsData += '- ' + match[1] + '\n'
-      }
-    }
-
-    // Create the `_data` directory if it doesn't already exist
-    if (!fs.existsSync('_data')) fs.mkdirSync('_data')
-
-    fs.writeFileSync('_data/glyphicons.yml', glyphiconsData)
-  });
+  grunt.registerTask('build-glyphicons-data', generateGlyphiconsData);
 
   // task for building customizer
-  grunt.registerTask('build-customizer', 'Add scripts/less files to customizer.', function () {
-    function getFiles(type) {
-      var files = {}
-      fs.readdirSync(type)
-        .filter(function (path) {
-          return type == 'fonts' ? true : new RegExp('\\.' + type + '$').test(path)
-        })
-        .forEach(function (path) {
-          var fullPath = type + '/' + path
-          return files[path] = (type == 'fonts' ? btoa(fs.readFileSync(fullPath)) : fs.readFileSync(fullPath, 'utf8'))
-        })
-      return 'var __' + type + ' = ' + JSON.stringify(files) + '\n'
-    }
-
-    var files = getFiles('js') + getFiles('less') + getFiles('fonts')
-    fs.writeFileSync('docs-assets/js/raw-files.js', files)
-  });
+  grunt.registerTask('build-customizer', ['build-customizer-vars-form', 'build-raw-files']);
+  grunt.registerTask('build-customizer-vars-form', ['jade']);
+  grunt.registerTask('build-raw-files', 'Add scripts/less files to customizer.', generateRawFilesJs);
 };
