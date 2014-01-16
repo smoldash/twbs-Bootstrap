@@ -14,15 +14,17 @@ module.exports = function (grunt) {
   var fs = require('fs')
   var generateGlyphiconsData = require('./docs/grunt/bs-glyphicons-data-generator.js')
   var generateRawFilesJs = require('./docs/grunt/bs-raw-files-generator.js')
-  var path = require('path')
+  var path = require('path');
 
   // Project configuration.
   grunt.initConfig({
 
+    themeName: grunt.option('theme') || 'noesis',
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*!\n' +
               ' * Bootstrap v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
+              ' * modified by Noesis Energy (http://www.noesisenergy.com\n' +
               ' * Copyright 2011-<%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
               ' * Licensed under <%= _.pluck(pkg.licenses, "type") %> (<%= _.pluck(pkg.licenses, "url") %>)\n' +
               ' */\n',
@@ -87,8 +89,8 @@ module.exports = function (grunt) {
         'fallback-colors': false
       },
       src: [
-        'dist/css/<%= pkg.name %>.css',
-        'dist/css/<%= pkg.name %>-theme.css',
+        'dist/css/<%= themeName %>.css',
+        'dist/css/<%= themeName %>-theme.css',
         'docs/assets/css/docs.css',
       ]
     },
@@ -113,7 +115,7 @@ module.exports = function (grunt) {
           'js/tab.js',
           'js/affix.js'
         ],
-        dest: 'dist/js/<%= pkg.name %>.js'
+        dest: 'dist/js/<%= themeName %>.js'
       }
     },
 
@@ -124,7 +126,7 @@ module.exports = function (grunt) {
           report: 'min'
         },
         src: ['<%= concat.bootstrap.dest %>'],
-        dest: 'dist/js/<%= pkg.name %>.min.js'
+        dest: 'dist/js/<%= themeName %>.min.js'
       },
       customize: {
         options: {
@@ -161,12 +163,12 @@ module.exports = function (grunt) {
           strictMath: true,
           sourceMap: true,
           outputSourceFiles: true,
-          sourceMapURL: '<%= pkg.name %>.css.map',
-          sourceMapFilename: 'dist/css/<%= pkg.name %>.css.map'
+          sourceMapURL: '<%= themeName %>.css.map',
+          sourceMapFilename: 'dist/css/<%= themeName %>.css.map'
         },
         files: {
-          //'dist/css/<%= pkg.name %>.css': 'less/bootstrap.less',
-          'dist/css/<%= pkg.name %>.css': 'less/<%= pkg.name %>.less'
+          //'dist/css/<%= themeName %>.css': 'less/bootstrap.less',
+          'dist/css/<%= themeName %>.css': 'less/<%= themeName %>.less'
         }
       },
       compileTheme: {
@@ -174,11 +176,11 @@ module.exports = function (grunt) {
           strictMath: true,
           sourceMap: true,
           outputSourceFiles: true,
-          sourceMapURL: '<%= pkg.name %>-theme.css.map',
-          sourceMapFilename: 'dist/css/<%= pkg.name %>-theme.css.map'
+          sourceMapURL: '<%= themeName %>-theme.css.map',
+          sourceMapFilename: 'dist/css/<%= themeName %>-theme.css.map'
         },
         files: {
-          'dist/css/<%= pkg.name %>-theme.css': 'less/theme.less'
+          'dist/css/<%= themeName %>-theme.css': 'less/theme.less'
         }
       },
       minify: {
@@ -187,8 +189,8 @@ module.exports = function (grunt) {
           report: 'min'
         },
         files: {
-          'dist/css/<%= pkg.name %>.min.css': 'dist/css/<%= pkg.name %>.css',
-          'dist/css/<%= pkg.name %>-theme.min.css': 'dist/css/<%= pkg.name %>-theme.css'
+          'dist/css/<%= themeName %>.min.css': 'dist/css/<%= themeName %>.css',
+          'dist/css/<%= themeName %>-theme.min.css': 'dist/css/<%= themeName %>-theme.css'
         }
       }
     },
@@ -217,10 +219,10 @@ module.exports = function (grunt) {
         },
         files: {
           src: [
-            'dist/css/<%= pkg.name %>.css',
-            'dist/css/<%= pkg.name %>.min.css',
-            'dist/css/<%= pkg.name %>-theme.css',
-            'dist/css/<%= pkg.name %>-theme.min.css',
+            'dist/css/<%= themeName %>.css',
+            'dist/css/<%= themeName %>.min.css',
+            'dist/css/<%= themeName %>-theme.css',
+            'dist/css/<%= themeName %>-theme.min.css',
           ]
         }
       }
@@ -232,8 +234,8 @@ module.exports = function (grunt) {
           config: 'less/.csscomb.json'
         },
         files: {
-          'dist/css/<%= pkg.name %>.css': ['dist/css/<%= pkg.name %>.css'],
-          'dist/css/<%= pkg.name %>-theme.css': ['dist/css/<%= pkg.name %>-theme.css']
+          'dist/css/<%= themeName %>.css': ['dist/css/<%= themeName %>.css'],
+          'dist/css/<%= themeName %>-theme.css': ['dist/css/<%= themeName %>-theme.css']
         }
       }
     },
