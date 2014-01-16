@@ -15,11 +15,10 @@ module.exports = function (grunt) {
   var generateGlyphiconsData = require('./docs/grunt/bs-glyphicons-data-generator.js')
   var generateRawFilesJs = require('./docs/grunt/bs-raw-files-generator.js')
   var path = require('path');
+  var themes = ['noesis', 'enernoc'];
 
   // Project configuration.
   grunt.initConfig({
-
-    themeName: grunt.option('theme') || 'noesis',
     // Metadata.
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*!\n' +
@@ -385,10 +384,17 @@ module.exports = function (grunt) {
   grunt.registerTask('dist-docs', ['copy:docs']);
 
   // Full distribution task.
-  grunt.registerTask('dist', ['clean', 'dist-css', 'copy:fonts', 'dist-docs', 'dist-js']);
+  //grunt.registerTask('dist', ['clean', 'dist-css', 'copy:fonts', 'dist-docs', 'dist-js']);
+  grunt.registerTask('dist', ['clean', 'dist-css']);
 
   // Default task.
-  grunt.registerTask('default', ['test', 'dist', 'build-glyphicons-data', 'build-customizer']);
+  //grunt.registerTask('default', ['test', 'dist', 'build-glyphicons-data', 'build-customizer']);
+  grunt.registerTask('default', function()
+  {
+    grunt.config('themeName', grunt.option('theme') || 'noesis' );
+
+    grunt.task.run('test', 'dist');
+  });
 
   // Version numbering task.
   // grunt change-version-number --oldver=A.B.C --newver=X.Y.Z
