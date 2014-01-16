@@ -83,12 +83,13 @@ module.exports = function (grunt) {
 
     csslint: {
       options: {
-        csslintrc: 'less/.csslintrc'
+        csslintrc: 'less/.csslintrc',
+        'fallback-colors': false
       },
       src: [
-        'dist/css/bootstrap.css',
-        'dist/css/bootstrap-theme.css',
-        'docs/assets/css/docs.css'
+        'dist/css/<%= pkg.name %>.css',
+        'dist/css/<%= pkg.name %>-theme.css',
+        'docs/assets/css/docs.css',
       ]
     },
 
@@ -164,7 +165,8 @@ module.exports = function (grunt) {
           sourceMapFilename: 'dist/css/<%= pkg.name %>.css.map'
         },
         files: {
-          'dist/css/<%= pkg.name %>.css': 'less/bootstrap.less'
+          //'dist/css/<%= pkg.name %>.css': 'less/bootstrap.less',
+          'dist/css/<%= pkg.name %>.css': 'less/<%= pkg.name %>.less'
         }
       },
       compileTheme: {
