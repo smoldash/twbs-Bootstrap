@@ -1,5 +1,20 @@
 # [Noesis' Bootstrap Projects](http://noesisenergy.com)
 
+### Compile Noesis Theme
+```
+grunt --theme=noesis
+```
+
+### Compile Enernoc Theme
+```
+grunt --theme=enernoc
+```
+
+### Remove both  Noesis and Enernoc Compilations
+```
+grunt clean
+```
+
 # [Bootstrap](http://getbootstrap.com) [![Build Status](https://secure.travis-ci.org/twbs/bootstrap.png)](http://travis-ci.org/twbs/bootstrap) [![devDependency Status](https://david-dm.org/twbs/bootstrap/dev-status.png)](https://david-dm.org/twbs/bootstrap#info=devDependencies)
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/bootstrap.svg)](https://saucelabs.com/u/bootstrap)
 

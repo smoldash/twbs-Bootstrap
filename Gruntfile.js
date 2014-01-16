@@ -15,7 +15,6 @@ module.exports = function (grunt) {
   var generateGlyphiconsData = require('./docs/grunt/bs-glyphicons-data-generator.js')
   var generateRawFilesJs = require('./docs/grunt/bs-raw-files-generator.js')
   var path = require('path');
-  var themes = ['noesis', 'enernoc'];
 
   // Project configuration.
   grunt.initConfig({
