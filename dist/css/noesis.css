@@ -724,7 +724,7 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
-@media (min-width: 768px) {
+@media (max-width: 991px) {
   .container {
     width: 100%;
   }
