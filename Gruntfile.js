@@ -385,6 +385,7 @@ module.exports = function (grunt) {
   // Full distribution task.
   //grunt.registerTask('dist', ['clean', 'dist-css', 'copy:fonts', 'dist-docs', 'dist-js']);
   grunt.registerTask('dist', ['clean', 'dist-css']);
+  grunt.registerTask('distDirty', ['dist-css']);
 
   // Default task.
   //grunt.registerTask('default', ['test', 'dist', 'build-glyphicons-data', 'build-customizer']);
@@ -392,7 +393,7 @@ module.exports = function (grunt) {
   {
     grunt.config('themeName', grunt.option('theme') || 'noesis' );
 
-    grunt.task.run('test', 'dist');
+    grunt.task.run('test', 'distDirty');
   });
 
   // Version numbering task.
