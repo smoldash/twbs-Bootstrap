@@ -393,7 +393,7 @@ module.exports = function (grunt) {
   {
     grunt.config('themeName', grunt.option('theme') || 'noesis' );
 
-    grunt.task.run('test', 'distDirty');
+    grunt.task.run('test', 'distDirty', 'copy:fonts');
   });
 
   // Version numbering task.
