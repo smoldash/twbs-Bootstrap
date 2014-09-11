@@ -1,0 +1,107 @@
+.ne-table thead
+{
+	font-size  :12px;
+}
+.ne-table th:not(.text-right):not(.text-left)
+{
+	text-align  : center;
+	font-weight : normal;
+}
+
+.ne-table td[ne-table-sortable],
+.ne-table th[ne-table-sortable]
+{
+	cursor     : pointer;
+	white-space: nowrap;
+}
+
+
+ne-table td[ne-table-sortable] i,
+.ne-table th[ne-table-sortable] i
+{
+	color       : #fd5e3f;
+	margin-left : 5px;
+}
+
+.ne-table td[ne-table-sortable]:hover i:not(.fa-chevron-down):not(.fa-chevron-up):before,
+.ne-table th[ne-table-sortable]:hover i:not(.fa-chevron-down):not(.fa-chevron-up):before
+{
+	content: "\f0dc"; /*fa-sort*/
+}
+
+.ne-table td[ng-click],
+.ne-table th[ng-click]
+{
+	cursor : pointer;
+}
+
+.ne-table .ne-table
+{
+	background-color : transparent;
+	margin-bottom    : 0px;
+	font-size        : 12px;
+}
+
+.ne-table td.ne-table-spacer,
+.ne-table th.ne-table-spacer
+{
+	visibility : hidden;
+	background : transparent;
+}
+
+.ne-table .ne-table-hover:hover td,
+.ne-table .ne-table-hover:hover th
+{
+	background : #39c;
+	color      : #fff;
+}
+
+.ne-table .ne-table-selectable:hover td,
+.ne-table .ne-table-selectable:hover th
+{
+	background : #39c;
+	color      : #fff;
+	cursor     : pointer;
+}
+
+/* ** ne-table-dark Theme *
+   ==================================================
+   ================================================== */
+.ne-table.ne-table-dark thead
+{
+	background : #444;
+	color      : #e1e1e1;
+}
+
+.ne-table.ne-table-light tbody
+{
+	background :#FFF;
+}
+
+.ne-table-dark td[ne-table-sortable]:hover,
+.ne-table-dark th[ne-table-sortable]:hover
+{
+	background: #666;
+	color     : #e1e1e1;
+}
+
+/* ** ne-table-light Theme *
+   ==================================================
+   ================================================== */
+.ne-table.ne-table-light thead
+{
+	background-color :#FFF;
+	color            :#333;
+}
+
+.ne-table.ne-table-light td
+{
+	border-top: 1px dashed #ddd;
+}
+
+.ne-table-light td[ne-table-sortable]:hover,
+.ne-table-light th[ne-table-sortable]:hover
+{
+	background: transparent;
+	color     : #000;
+}

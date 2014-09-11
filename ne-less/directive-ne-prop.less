@@ -1,0 +1,95 @@
+/*
+For neProp
+ */
+.frame{
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0;
+    bottom:0;
+    left:0
+    }
+.frame.expand{
+    margin-left:400px;
+    }
+    .frame .nePropListSlideout{
+        height:100%;
+        background-color:#fffaf0;
+        float: left;
+        position: fixed;
+        left: 0;
+        top: 50px;
+        bottom:0px;
+        z-index: 1044;
+        }
+        .frame .nePropListSlideout.collapse{
+            float:left;
+            height:100% !important;
+            width:auto;
+            }
+            .frame .nePropListSlideout.collapse.height{
+                position:fixed;
+                height:0;
+                overflow:hidden;
+                -webkit-transition:height .35s ease;
+                -moz-transition:height .35s ease;
+                -o-transition:height .35s ease;
+                transition:height .35s ease
+                }
+            .frame .nePropListSlideout.collapse.width{
+                position:fixed;
+                width:0;
+                overflow:hidden;
+                -webkit-transition:max-width .35s ease;
+                -moz-transition:width .35s ease;
+                -o-transition:width .35s ease;
+                transition:width .35s ease;
+                }
+            .frame .nePropListSlideout.collapse.in.width{
+                min-width: 400px;
+                }
+            .frame .nePropListSlideout.collapse.in.height{
+                height:auto;
+                }
+        .frame .nePropListSlideout .collapse-inner{
+            width:400px;
+            height:100%;
+            overflow-y:auto;
+            }
+
+    .frame #page{
+        width:100%;
+        height:100%;
+        overflow-y:auto;
+        position:relative;
+        margin-top: 34px;
+        z-index:144;
+    	}
+        .frame #page .neSlideout-toggle {
+        	cursor: pointer;
+            background:orange;
+            position:fixed;
+            top:50px;
+            left:5px;
+            z-index:1045;/*Modal is at 1050, we want it under*/
+            display: block !important;
+        }
+        .frame #page .neSlideout-toggle::after
+        {
+        	content: "open";
+        	position: relative;
+        	left: 13px;
+        	top: -2px;
+        }
+        .frame.expand #page .neSlideout-toggle{
+        	left: calc(400px - 25px);
+        }
+        .frame.expand #page .neSlideout-toggle::before {
+        	content: "close";
+        	left: -37px;
+			top: -2px;
+			position: relative;
+        }
+        .frame.expand #page .neSlideout-toggle::after {
+        	content : "";
+        }

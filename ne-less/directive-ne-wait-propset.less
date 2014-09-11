@@ -1,0 +1,22 @@
+
+
+/* make the content invisible while the property set(s) are being assembled */
+.neWaitPropSet-wait {
+     opacity: 0;
+}
+
+/* when the property set is ready, fade in the content */
+.view .neWaitPropSet-done {
+	opacity: 1.0;
+    -webkit-transition: opacity 500ms linear;
+    -moz-transition: opacity 500ms linear;
+    -o-transition: opacity 500ms linear;
+    -ms-transition: opacity 500ms linear;
+     transition: opacity 500ms linear;
+}
+
+/* start the content off as invisible */
+.neWaitPropSet {
+	opacity: 0;
+}
+

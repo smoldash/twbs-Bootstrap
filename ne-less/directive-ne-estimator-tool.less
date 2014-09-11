@@ -1,0 +1,147 @@
+.ne-estimator .panel-body{
+padding:2em;
+}
+.ne-estimator .panel-footer {
+border-top: none;
+background: #e1e1e1;
+}
+.ne-estimator .panel-bottom-bg{
+background-color: #e1e1e1;
+height: 5em;
+width: 100%;
+}
+.ne-estimator input[type="range"] {
+width: 100%;
+}
+.ne-estimate-preview .lead {margin-bottom: 0px;}
+.ne-estimate-preview .panel-footer, .ne-estimator .panel-footer{
+background-image: url(https://noesisimg.s3.amazonaws.com/nb-images/stripe-pattern.svg);
+background-size: contain;
+background-repeat: repeat-x;
+background-position: center;
+}
+
+.ne-step
+{
+  display: inline-block;
+}
+
+.ne-steps
+{
+  width: 100%;
+  padding: 2em .5em;
+}
+.ne-steps .progress
+{
+  position: relative;
+  float:left;
+  overflow: visible;
+  height: 10px;
+}
+
+.done   > .ne-step::before,
+.active > .ne-step::before
+{
+  background : #069;
+  color      : #fff;
+  border: 0.25em #39C solid;
+}
+
+.done > .ne-step::before
+{
+  font-family: FontAwesome;
+  content    : '\f00C'!important;
+}
+
+.no-animate
+{
+  background-color:#39c;
+}
+
+.progress.done > .ne-step.progress-bar
+{
+  -webkit-transition: width 0.5s ease-out;
+  transition: width 0.5s ease-out;
+  width: 100%;
+  background-color:#39c
+}
+
+.ne-step::before
+{
+  position      : absolute;
+  left          : -5px;
+  top           : -9px;
+  color         : red;
+  background    : #FFF;
+  border: .25em #E5E5E5 solid;
+  padding-top   : 2px;
+  border-radius : 2em;
+  z-index       : 1;
+  min-width     : 30px;
+  min-height    : 30px;
+}
+
+.ne-step .ne-step-name
+{
+  position  : absolute;
+  color     : #39c;
+  left     : -11px;
+  top       : -30px;
+  content   : 'After';
+  min-width : 30px;
+}
+
+.ne-step-last
+{
+  position:absolute;
+  right:0px;
+}
+
+.ne-step-last .ne-step::before
+{
+  right: -5px;
+  left : inherit;
+}
+
+.ne-step-last .ne-step .ne-step-name
+{
+  right: -10px!important;
+  left : inherit!important;
+}
+
+.step1-circle .ne-step::before  { content: '1';}
+.step2-circle .ne-step::before  { content: '2';}
+.step3-circle .ne-step::before  { content: '3';}
+.step4-circle .ne-step::before  { content: '4';}
+.step5-circle .ne-step::before  { content: '5';}
+.step6-circle .ne-step::before  { content: '6';}
+.step7-circle .ne-step::before  { content: '7';}
+.step8-circle .ne-step::before  { content: '8';}
+.step9-circle .ne-step::before  { content: '9';}
+.step10-circle .ne-step::before { content: '10';}
+
+.est-step1-bg{
+background-image: url(https://noesisimg.s3.amazonaws.com/nb-images/spend-img.svg);
+background-position: center bottom;
+background-repeat: no-repeat;
+background-size: contain;
+padding: 220px 0;
+}
+.savings-measures-container .panel-default>.panel-heading{background: #fff}
+.savings-measures-container .panel-default>.panel-heading+.panel-collapse .panel-body {padding: 0;}
+.savings-measures-panel{
+transition: background-color 0.25s ease;
+padding:1em;
+}
+.savings-measures-panel:hover{
+cursor: pointer;
+}
+.savings-measures-panel-selected{
+background:#deeff1;
+color: #39c;
+padding:1em;
+}
+.savings-measures .panel{background: #f1f1f1}
+.savings-measures .panel-body{padding:1em;}
+/*.savings-measures-icon{color: rgba(51,51,51,0.1);}*/
+

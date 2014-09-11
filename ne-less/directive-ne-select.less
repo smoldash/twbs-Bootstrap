@@ -1,0 +1,68 @@
+ne-select {
+    display:block;
+}
+
+ne-select .dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+}
+ne-select .dropdown-menu {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2px;
+}
+ne-select .dropdown-menu > li > a {
+    padding: 3px 10px;
+    cursor:pointer;
+}
+
+ne-select .select-caret
+{
+	margin-right : 10px;
+	margin-top   : 2px;
+	float        : right;
+}
+
+ne-select .dropdown-menu > li > a.ne-select-clear
+{
+	color: #f90;
+}
+
+ne-select .dropdown-menu > li > a.ne-select-clear:hover
+{
+	color: #fff;
+}
+
+ne-select .header
+{
+	margin-left   : 10px;
+	float         : left;
+	max-width     : calc(100% - 50px);
+	white-space   : nowrap;
+	overflow      : hidden;
+	text-overflow : ellipsis;
+	color         : rgb(85, 85, 85);
+	font-weight   : 400;
+}
+
+ne-select .disabled .header,
+ne-select .disabled
+{
+	color: #eee;
+}
+
+ne-select .disabled,
+{
+	position : relative;
+}
+
+ne-select .disabled .overlay
+{
+	position : absolute;
+	top      : 0;
+	bottom   : 0;
+	right    : 0;
+	left     : 0;
+	z-index  : 1000;
+	cursor   : not-allowed;
+}

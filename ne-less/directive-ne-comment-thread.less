@@ -1,0 +1,173 @@
+/**
+ * ne-comments
+ */
+
+.modalThread .addCommentForm
+{
+	padding: 20px;
+}
+
+.ne-comments
+{
+	position           : relative;
+	display            : block;
+	transition         : margin-left 0.24s ease-in-out,width 0.24s ease-in-out;
+	-webkit-transition : margin-left 0.24s ease-in-out,width 0.24s ease-in-out;
+}
+
+ne-comments-tip
+{
+	display: block;
+}
+
+*[ne-comment-hide-when-thread-is-active].ng-hide
+{
+	display:none!important;
+}
+
+.ne-comments .contentToCommentOn
+{
+	border-right       : 1px solid #eee;
+	transition         : margin-left 0.24s ease-in-out,width 0.24s ease-in-out;
+	-webkit-transition : margin-left 0.24s ease-in-out,width 0.24s ease-in-out;
+}
+	.contentToCommentOn.wider
+	{
+		width: 94%;
+	}
+
+.ne-comments .commentTip
+{
+	float       : left;
+	margin-left : 35px;
+	width       : 13%;
+}
+
+.ne-comments .closeThread
+{
+	position: absolute;
+	float:right;
+	top: 7px;
+	right: 7px;
+	color: #999;
+	z-index: 1;
+}
+
+.ne-comment-thread-aside
+{
+	position   : absolute;
+	left       : 100%;
+	background : transparent;
+	width      : calc(50% - 40px);
+	float      : left;
+	z-index    : 1;
+}
+	.ne-comment-thread-aside[float=true]
+	{
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+
+.ne-comments[full-width=true] .ne-comment-thread-aside
+{
+	width      : calc(33%);
+}
+
+.ne-comment-thread-aside.active
+{
+	margin-left : 35px;
+	z-index: 2;
+}
+
+.ne-comments[full-width=true] .ne-comment-thread-aside.active
+{
+	margin-left : 0;
+}
+	.ne-comment-thread-aside .addCommentForm
+	{
+		position                   : relative;
+		display                    : none;
+		padding                    : 15px;
+		border-top-right-radius    : 8px;
+		border-bottom-right-radius : 8px;
+		border-top-left-radius     : 8px;
+		border-bottom-left-radius  : 8px;
+		z-index                    : 1009;
+	}
+		.addCommentForm .commentContainer
+		{
+			position      : relative;
+			margin-bottom : 5px;
+		}
+			.commentContainer .commentTimestamp,
+			.commentContainer .deleteComment
+			{
+				font-size : 0.65em;
+			}
+
+	.ne-comment-thread-aside .addCommentBtn
+	{
+		position                   : relative;
+		height                     : 26px;
+		width                      : 30px;
+		white-space                : nowrap;
+		cursor                     : pointer;
+		line-height                : 26px;
+		padding-right              : 9px;
+		padding-left               : 7px;
+		border-top-right-radius    : 4px;
+		border-bottom-right-radius : 4px;
+		z-index                    : 1010;
+		transition                 : width 0.08s ease-in-out;
+		-webkit-transition         : width 0.08s ease-in-out;
+	}
+
+	.addCommentForm .comment
+	{
+		border-bottom : 1px dashed #999;
+	}
+
+	.ne-comment-thread-aside .commentClose
+	{
+		position : absolute;
+		top      : 3px;
+		right    : 3px;
+	}
+
+	.ne-comment-thread-aside.active .addCommentForm
+	{
+		display : block;
+	}
+
+	.ne-comment-thread-aside.active .addCommentBtn
+	{
+		display: none;
+	}
+		.ne-comment-thread-aside .addCommentBtn:hover
+		{
+			width       : 136px;
+			background  : rgba(51,51,51,1);
+		}
+		.ne-comment-thread-aside .addCommentBtn:hover::after
+		{
+			padding-left : 4px;
+			white-space  : nowrap;
+			color        : #e1e1e1;
+			content      : " Add Comment";
+		}
+		.ne-comment-thread-aside .addCommentBtn::before,
+		.ne-comment-thread-aside:not([float=true]) .addCommentForm::before
+		{
+			width         : 0;
+			height        : 0;
+			position      : absolute;
+			content       : " ";
+			border-top    : 13px solid transparent;
+			border-bottom : 13px solid transparent;
+			border-right  : 15px solid #f1f1f1;
+			left          : -15px;
+		}
+			.ne-comment-thread-aside .addCommentBtn:hover::before
+			{
+				border-right  : 15px solid rgba(51,51,51,1);
+			}
