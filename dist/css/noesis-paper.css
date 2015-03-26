@@ -1,7 +1,7 @@
 /*!
  * Bootstrap v3.0.3 (http://getbootstrap.com)
  * modified by Noesis Energy (http://www.noesisenergy.com
- * Copyright 2011-2014 Twitter, Inc.
+ * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 
@@ -11820,9 +11820,11 @@ body {
   width: 45px;
   height: 102%;
   padding-top: 15px;
-  color: #fff;
   text-align: center;
   border: 1px solid #e1e1e1;
+  }
+.alert-white .icon:not(.stacked) {
+  color: #fff;
   }
 .alert-white .icon:after {
   position: absolute;
@@ -11843,13 +11845,18 @@ body {
        -o-transform: rotate(45deg);
           transform: rotate(45deg);
   }
+.alert-white .icon i:not(.fa-stack i) {
+  color: #fff;
+  }
 .alert-white .icon i {
   position: absolute;
   top: 50%;
   left: 12px;
   margin-top: -6px;
-  font-size: 20px;
-  color: #fff;
+  }
+.alert-white .icon .fa-stack i {
+  top: 0;
+  left: 0;
   }
 .new-portfolio-image {
   margin-right: 15px;
