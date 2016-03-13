@@ -1,0 +1,93 @@
+/* ** Alerts *
+   ==================================================
+   ================================================== */
+.alert
+{
+    border: 1px solid;
+}
+.alert-danger.alert-empty
+{
+    background-color: transparent;
+    border: #e1e1e1 .2em dashed;
+}
+.alert-white.rounded {
+border-radius: 3px;
+-webkit-border-radius: 3px;
+}
+
+.alert-white {
+padding-left: 61px;
+position: relative;
+}
+
+.alert-white.alert-info .icon, .alert-white.alert-info .icon:after {
+border-color: #3399cc;
+background: #3399cc;
+}
+.alert-white.alert-warning .icon, .alert-white.alert-warning .icon:after {
+border-color: #ff9900;
+background: #ff9900;
+}
+.alert-white.alert-success .icon, .alert-white.alert-success .icon:after {
+border-color: #a0c335;
+background: #a0c335;
+}
+.alert-white.alert-danger .icon, .alert-white.alert-danger .icon:after {
+border-color: #fd5e3f;
+background: #fd5e3f;
+}
+.alert-white.rounded .icon {
+border-radius: 3px 0 0 3px;
+-webkit-border-radius: 3px 0 0 3px;
+}
+.alert-white .icon {
+text-align: center;
+width: 45px;
+height: 102%;
+position: absolute;
+top: -1px;
+left: -1px;
+border: 1px solid #e1e1e1;;
+padding-top: 15px;
+}
+
+.alert-white .icon:not(.stacked) {
+    color: #fff;
+}
+
+.alert-white .icon:after {
+-webkit-transform: rotate(45deg);
+-moz-transform: rotate(45deg);
+-ms-transform: rotate(45deg);
+-o-transform: rotate(45deg);
+transform: rotate(45deg);
+display: block;
+content: '';
+width: 10px;
+height: 10px;
+border: 1px solid #e1e1e1;;
+position: absolute;
+border-left: 0;
+border-bottom: 0;
+top: 50%;
+right: -6px;
+margin-top: -3px;
+background: #fff;
+}
+
+
+.alert-white .icon i:not(.fa-stack i) {
+    color: #FFF;    
+}
+
+.alert-white .icon i {
+    left: 12px;
+    position: absolute;
+    margin-top: -6px;
+    top: 50%;
+}
+
+.alert-white .icon .fa-stack i {
+    left: 0;
+    top: 0;
+}
